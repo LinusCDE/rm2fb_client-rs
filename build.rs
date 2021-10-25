@@ -4,6 +4,10 @@ use std::process::{Command, Stdio};
 use std::{env, fs};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=remarkable2-framebuffer/src/client/client.pro");
+    println!("cargo:rerun-if-changed=remarkable2-framebuffer/src/client/main.cpp");
+
     std::env::set_current_dir("remarkable2-framebuffer/src/client")?;
 
     // Add extra line to the end of "client.pro" if missing
@@ -28,17 +32,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Command::new("/usr/bin/env")
         .arg("make")
+        .arg("clean")
+        .arg("all")
         .stderr(Stdio::piped())
         .stdout(Stdio::piped())
         .output()?;
 
     // Copy generated file to OUT_DIR and tell rust to link it statically
     let static_lib_filename = "librm2fb_client.a";
-    fs::copy(
-        static_lib_filename,
-        PathBuf::from(env::var("OUT_DIR")?).join(static_lib_filename),
-    )?;
-    println!("rustc-link-lib=static=librm2fb_client");
-
+    let out_dir_path = PathBuf::from(env::var("OUT_DIR")?);
+    fs::copy(static_lib_filename, out_dir_path.join(static_lib_filename))?;
+    println!(
+        "cargo:rustc-link-search=native={}",
+        out_dir_path.to_str().unwrap()
+    );
+    println!("cargo:rustc-link-lib=static=rm2fb_client");
     Ok(())
 }
