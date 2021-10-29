@@ -2,3 +2,26 @@
 name = "rm2fb_client"
 version = "0.1.0"
 edition = "2021"
+
+[dependencies]
+#link-cplusplus = { version = "1.0", features = ["libstdc++"] }
+#qttypes = "0.2.4"
+#libc = "0.2"
+#nix = "0.23"
+cpp = "0.5"
+#frida = "0.2.1"
+#frida-gum = { version = "0.6.0", features = [ "auto-download" ] }
+#clang = "1.0.3"
+frida-gum-sys = { git = "https://github.com/LinusCDE/frida-rust.git", version = "0.3.1", features = [ "auto-download" ] }
+
+[build-dependencies]
+#link-cplusplus = "1.0.5"
+#link-cplusplus = { version = "1.0", features = ["libstdc++"] }
+#qttypes = "0.2.4"
+#qmetaobject
+#libc = "0.2"
+cpp_build = "0.5"
+#nix = "0.23"
+#frida-gum-sys = "0.3.1"
+#frida = "0.2.1"
+openssl = { version = "0.10.20", features = [ "vendored" ] }

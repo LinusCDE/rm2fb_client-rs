@@ -1,3 +1,5 @@
+//extern crate link_cplusplus;
+extern crate frida_gum;
 use std::os::raw::{c_char, c_int, c_ulong};
 
 extern "C" {
